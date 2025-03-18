@@ -24,7 +24,9 @@ namespace IncidentBook.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<IncidentClassification>>> GetIncidentClassifications()
         {
-            return await _context.IncidentClassifications.ToListAsync();
+            return await _context.IncidentClassifications
+                .OrderBy(item => item.ClassificationName)
+                .ToListAsync();
         }
 
         // GET: api/IncidentClassifications/5
