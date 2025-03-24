@@ -9,6 +9,7 @@ using IncidentBook.Models;
 using IncidentBook.Models.DTOs;
 using Microsoft.CodeAnalysis;
 using Humanizer;
+using IncidentBook.Services.Interfaces;
 
 namespace IncidentBook.Controllers
 {
@@ -16,12 +17,21 @@ namespace IncidentBook.Controllers
     [ApiController]
     public class IncidentItemsController : ControllerBase
     {
-        private readonly IncidentContext _context;
+        //private readonly IncidentContext _context;
 
-        public IncidentItemsController(IncidentContext context)
+        //public IncidentItemsController(IncidentContext context)
+        //{
+        //    _context = context;
+        //}
+
+        private readonly IIncidentService _incidentService;
+
+        public IncidentItemsController(IIncidentService incidentService)
         {
-            _context = context;
+            _incidentService = incidentService;
         }
+
+
 
         // GET: api/IncidentItems
         //[HttpGet]
@@ -31,58 +41,58 @@ namespace IncidentBook.Controllers
         //        .OrderBy(item => item.DateTime)             
         //        .ToListAsync();
         //}
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<IncidentDto>>> GetTodoItems()
-        {
-            var incidents = await _context.TodoItems
-                .Include(i => i.ClientItem)
-                .Include(i => i.Classification)
-                .Include(i => i.Resolution)
-                .OrderBy(i => i.DateTime)
-                .Select(i => new IncidentDto
-                {
-                    Id = i.Id,
-                    DateTime = i.DateTime,
-                    Description = i.Description,
-                    IsComplete = i.IsComplete,
-                    ClientId = i.ClientId,
-                    Client = new ClientDto
-                    {
-                        Id = i.ClientItem.Id,
-                        Name = i.ClientItem.Name
-                    },
-                    ClassificationId = i.ClassificationId,
-                    Classification = new ClassificationDto
-                    {
-                        Id = i.Classification.Id,
-                        ClassificationName = i.Classification.ClassificationName
-                    },
-                    ResolutionId = i.ResolutionId,
-                    Resolution = i.Resolution == null ? null : new ResolutionDto
-                    {
-                        Id = i.Resolution.Id,
-                        Resolution = i.Resolution.Resolution
-                    }
-                })
-                .ToListAsync();
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<IncidentDto>>> GetTodoItems()
+        //{
+        //    var incidents = await _context.TodoItems
+        //        .Include(i => i.ClientItem)
+        //        .Include(i => i.Classification)
+        //        .Include(i => i.Resolution)
+        //        .OrderBy(i => i.DateTime)
+        //        .Select(i => new IncidentDto
+        //        {
+        //            Id = i.Id,
+        //            DateTime = i.DateTime,
+        //            Description = i.Description,
+        //            IsComplete = i.IsComplete,
+        //            ClientId = i.ClientId,
+        //            Client = new ClientDto
+        //            {
+        //                Id = i.ClientItem.Id,
+        //                Name = i.ClientItem.Name
+        //            },
+        //            ClassificationId = i.ClassificationId,
+        //            Classification = new ClassificationDto
+        //            {
+        //                Id = i.Classification.Id,
+        //                ClassificationName = i.Classification.ClassificationName
+        //            },
+        //            ResolutionId = i.ResolutionId,
+        //            Resolution = i.Resolution == null ? null : new ResolutionDto
+        //            {
+        //                Id = i.Resolution.Id,
+        //                Resolution = i.Resolution.Resolution
+        //            }
+        //        })
+        //        .ToListAsync();
 
-            return Ok(incidents);
-        }
+        //    return Ok(incidents);
+        //}
 
 
         // GET: api/IncidentItems/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IncidentItem>> GetIncidentItem(long id)
-        {
-            var incidentItem = await _context.TodoItems.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<IncidentItem>> GetIncidentItem(long id)
+        //{
+        //    var incidentItem = await _context.TodoItems.FindAsync(id);
 
-            if (incidentItem == null)
-            {
-                return NotFound();
-            }
+        //    if (incidentItem == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return incidentItem;
-        }
+        //    return incidentItem;
+        //}
 
         // PUT: api/IncidentItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -114,33 +124,33 @@ namespace IncidentBook.Controllers
 
         //    return NoContent();
         //}
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateIncidentItem(long id, IncidentUpdateDto dto)
-        {
-            if (dto == null || string.IsNullOrWhiteSpace(dto.Description) || dto.ClientId <= 0 || dto.ClassificationId <= 0)
-            {
-                return BadRequest("Заполните все обязательные поля.");
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateIncidentItem(long id, IncidentUpdateDto dto)
+        //{
+        //    if (dto == null || string.IsNullOrWhiteSpace(dto.Description) || dto.ClientId <= 0 || dto.ClassificationId <= 0)
+        //    {
+        //        return BadRequest("Заполните все обязательные поля.");
+        //    }
 
-            var incident = await _context.TodoItems.FindAsync(id);
-            if (incident == null)
-            {
-                return NotFound("Инцидент не найден.");
-            }
+        //    var incident = await _context.TodoItems.FindAsync(id);
+        //    if (incident == null)
+        //    {
+        //        return NotFound("Инцидент не найден.");
+        //    }
 
-            // Обновляем только измененные поля
-            incident.DateTime = dto.DateTime;
-            incident.Description = dto.Description;
-            incident.ClientId = dto.ClientId;
-            incident.ClassificationId = dto.ClassificationId;
-            incident.IsComplete = dto.IsComplete;
-            incident.ResolutionId = dto.IsComplete ? dto.ResolutionId : null;
+        //    // Обновляем только измененные поля
+        //    incident.DateTime = dto.DateTime;
+        //    incident.Description = dto.Description;
+        //    incident.ClientId = dto.ClientId;
+        //    incident.ClassificationId = dto.ClassificationId;
+        //    incident.IsComplete = dto.IsComplete;
+        //    incident.ResolutionId = dto.IsComplete ? dto.ResolutionId : null;
 
-            _context.TodoItems.Update(incident);
-            await _context.SaveChangesAsync();
+        //    _context.TodoItems.Update(incident);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent(); // 204 No Content - успешное обновление без возврата объекта
-        }
+        //    return NoContent(); // 204 No Content - успешное обновление без возврата объекта
+        //}
 
 
         // POST: api/IncidentItems
@@ -168,80 +178,115 @@ namespace IncidentBook.Controllers
 
         //    return CreatedAtAction(nameof(GetIncidentItem), new { id = incident.Id }, incident);
         //}
+        //[HttpPost]
+        //public async Task<IActionResult> CreateIncidentWithDetails([FromBody] IncidentCreateDto request)
+        //{
+        //    if (request == null || string.IsNullOrWhiteSpace(request.Description) || request.ClientId == 0)
+        //    {
+        //        return BadRequest("Все обязательные поля должны быть заполнены.");
+        //    }
+
+        //    // Создаем новый инцидент
+        //    var incident = new IncidentItem
+        //    {
+        //        DateTime = request.DateTime,
+        //        Description = request.Description,
+        //        ClientId = request.ClientId,
+        //        ClassificationId = request.ClassificationId,
+        //        IsComplete = request.IsComplete,
+        //        ResolutionId = request.IsComplete ? request.ResolutionId : null
+        //    };
+
+        //    _context.TodoItems.Add(incident);
+        //    await _context.SaveChangesAsync();
+
+
+
+        //    // Возвращаем готовый объект, чтобы на клиенте не нужно было получать имя клиента, классификацию и резолюцию
+        //    var result = await _context.TodoItems
+        //        .Where(i => i.Id == incident.Id)
+        //        .Select(i => new IncidentCreateResponseDto
+        //        {
+        //            Id = i.Id,
+        //            DateTime = i.DateTime,
+        //            Description = i.Description,
+        //            ClientId = i.ClientId,
+        //            ClientName = i.ClientItem.Name,
+        //            Classification = i.Classification.ClassificationName,
+        //            IsComplete = i.IsComplete,
+        //            Resolution = i.Resolution != null ? i.Resolution.Resolution : null
+        //        })
+        //        .FirstOrDefaultAsync();
+
+        //    return Ok(result);
+        //}
+
+
         [HttpPost]
-        public async Task<IActionResult> CreateIncidentWithDetails([FromBody] IncidentCreateDto request)
+        public async Task<IActionResult> CreateIncident([FromBody] IncidentCreateDto dto)
         {
-            if (request == null || string.IsNullOrWhiteSpace(request.Description) || request.ClientId == 0)
+            try
             {
-                return BadRequest("Все обязательные поля должны быть заполнены.");
+                var result = await _incidentService.CreateIncidentAsync(dto);
+                return Ok(result);
             }
-
-            // Создаем новый инцидент
-            var incident = new IncidentItem
+            catch (ArgumentException ex)
             {
-                DateTime = request.DateTime,
-                Description = request.Description,
-                ClientId = request.ClientId,
-                ClassificationId = request.ClassificationId,
-                IsComplete = request.IsComplete,
-                ResolutionId = request.IsComplete ? request.ResolutionId : null
-            };
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ошибка сервера: " + ex.Message);
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var incidents = await _incidentService.GetAllIncidentsAsync();
+            return Ok(incidents);
+        }
 
-            _context.TodoItems.Add(incident);
-            await _context.SaveChangesAsync();
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateIncident(long id, IncidentUpdateDto dto)
+        {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Description) || dto.ClientId <= 0 || dto.ClassificationId <= 0)
+                return BadRequest("Заполните все обязательные поля.");
 
-            //// Получаем имя клиента ( не знаю как оптимальнее
-            //var client = await _context.ClientItems.FindAsync(request.ClientId);
-            //string clientName = client != null ? client.Name : "Неизвестный клиент";
+            var updated = await _incidentService.UpdateIncidentAsync(id, dto);
+            if (!updated) return NotFound("Инцидент не найден.");
 
-            ////Получаем текст классификации
-            //var searchClassification = await _context.IncidentClassifications.FindAsync(request.ClassificationId);
-            //string? classification = searchClassification != null ? searchClassification.ClassificationName : "Неизвестная классификация";
+            return NoContent();
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteIncident(long id)
+        {
+            var deleted = await _incidentService.DeleteIncidentAsync(id);
+            if (!deleted) return NotFound("Инцидент не найден.");
 
-            ////Получаем текст резолюции
-            //var searchResolution = await _context.ClosedIncidentsItems.FindAsync(request.ResolutionId);
-            //string? resolution = searchResolution != null ? searchResolution.Resolution : "Неизвестная резолюция";
-
-            // Возвращаем готовый объект, чтобы на клиенте не нужно было получать имя клиента, классификацию и резолюцию
-            var result = await _context.TodoItems
-                .Where(i => i.Id == incident.Id)
-                .Select(i => new IncidentCreateResponseDto
-                {
-                    Id = i.Id,
-                    DateTime = i.DateTime,
-                    Description = i.Description,
-                    ClientId = i.ClientId,
-                    ClientName = i.ClientItem.Name,
-                    Classification = i.Classification.ClassificationName,
-                    IsComplete = i.IsComplete,
-                    Resolution = i.Resolution != null ? i.Resolution.Resolution : null
-                })
-                .FirstOrDefaultAsync();
-
-            return Ok(result);
+            return NoContent(); // 204 - всё удалено, тело не возвращается
         }
 
 
         // DELETE: api/IncidentItems/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteIncidentItem(long id)
-        {
-            var incidentItem = await _context.TodoItems.FindAsync(id);
-            if (incidentItem == null)
-            {
-                return NotFound();
-            }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteIncidentItem(long id)
+        //{
+        //    var incidentItem = await _context.TodoItems.FindAsync(id);
+        //    if (incidentItem == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.TodoItems.Remove(incidentItem);
-            await _context.SaveChangesAsync();
+        //    _context.TodoItems.Remove(incidentItem);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        private bool IncidentItemExists(long id)
-        {
-            return _context.TodoItems.Any(e => e.Id == id);
-        }
+        //private bool IncidentItemExists(long id)
+        //{
+        //    return _context.TodoItems.Any(e => e.Id == id);
+        //}
 
 
     }

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IncidentBook.Models;
+using IncidentBook.Models.DTOs;
+using IncidentBook.Services.Interfaces;
 
 namespace IncidentBook.Controllers
 {
@@ -13,98 +15,141 @@ namespace IncidentBook.Controllers
     [ApiController]
     public class ClientItemsController : ControllerBase
     {
-        private readonly IncidentContext _context;
+        //    private readonly IncidentContext _context;
 
-        public ClientItemsController(IncidentContext context)
+        //    public ClientItemsController(IncidentContext context)
+        //    {
+        //        _context = context;
+        //    }
+
+        //    // GET: api/ClientItems
+        //    [HttpGet]
+        //    public async Task<ActionResult<IEnumerable<ClientItem>>> GetClients()
+        //    {
+        //        return await _context.ClientItems
+        //            .OrderBy(item => item.Name)
+        //            .ToListAsync();
+        //    }
+
+        //    // GET: api/ClientItems/5
+        //    [HttpGet("{id}")]
+        //    public async Task<ActionResult<ClientItem>> GetClientItem(int id)
+        //    {
+        //        var clientItem = await _context.ClientItems.FindAsync(id);
+
+        //        if (clientItem == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        return clientItem;
+        //    }
+
+        //    // PUT: api/ClientItems/5
+        //    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //    [HttpPut("{id}")]
+        //    public async Task<IActionResult> PutClientItem(int id, ClientItem clientItem)
+        //    {
+        //        if (id != clientItem.Id)
+        //        {
+        //            return BadRequest();
+        //        }
+
+        //        _context.Entry(clientItem).State = EntityState.Modified;
+
+        //        try
+        //        {
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!ClientItemExists(id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+
+        //        return NoContent();
+        //    }
+
+        //    // POST: api/ClientItems
+        //    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //    [HttpPost]
+        //    public async Task<ActionResult<ClientItem>> PostClientItem(ClientItem clientItem)
+        //    {
+        //        clientItem.Incidents = null;
+        //        _context.ClientItems.Add(clientItem);
+        //        await _context.SaveChangesAsync();
+
+        //        return CreatedAtAction(nameof(GetClientItem), new { id = clientItem.Id }, clientItem);
+        //    }
+
+        //    // DELETE: api/ClientItems/5
+        //    [HttpDelete("{id}")]
+        //    public async Task<IActionResult> DeleteClientItem(int id)
+        //    {
+        //        var clientItem = await _context.ClientItems.FindAsync(id);
+        //        if (clientItem == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        _context.ClientItems.Remove(clientItem);
+        //        await _context.SaveChangesAsync();
+
+        //        return NoContent();
+        //    }
+
+        //    private bool ClientItemExists(int id)
+        //    {
+        //        return _context.ClientItems.Any(e => e.Id == id);
+        //    }
+
+        private readonly IClientService _clientService;
+
+        public ClientItemsController(IClientService clientService)
         {
-            _context = context;
+            _clientService = clientService;
         }
 
-        // GET: api/ClientItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClientItem>>> GetClients()
+        public async Task<IActionResult> GetAll()
         {
-            return await _context.ClientItems
-                .OrderBy(item => item.Name)
-                .ToListAsync();
+            var result = await _clientService.GetAllAsync();
+            return Ok(result);
         }
 
-        // GET: api/ClientItems/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ClientItem>> GetClientItem(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var clientItem = await _context.ClientItems.FindAsync(id);
-
-            if (clientItem == null)
-            {
-                return NotFound();
-            }
-
-            return clientItem;
+            var result = await _clientService.GetByIdAsync(id);
+            return result == null ? NotFound() : Ok(result);
         }
 
-        // PUT: api/ClientItems/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutClientItem(int id, ClientItem clientItem)
-        {
-            if (id != clientItem.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(clientItem).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClientItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/ClientItems
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ClientItem>> PostClientItem(ClientItem clientItem)
+        public async Task<IActionResult> Create([FromBody] ClientDto dto)
         {
-            clientItem.Incidents = null;
-            _context.ClientItems.Add(clientItem);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetClientItem), new { id = clientItem.Id }, clientItem);
+            var created = await _clientService.CreateAsync(dto);
+            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
         }
 
-        // DELETE: api/ClientItems/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] ClientDto dto)
+        {
+            var updated = await _clientService.UpdateAsync(id, dto);
+            return updated ? NoContent() : NotFound();
+        }
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClientItem(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var clientItem = await _context.ClientItems.FindAsync(id);
-            if (clientItem == null)
-            {
-                return NotFound();
-            }
-
-            _context.ClientItems.Remove(clientItem);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ClientItemExists(int id)
-        {
-            return _context.ClientItems.Any(e => e.Id == id);
+            var deleted = await _clientService.DeleteAsync(id);
+            return deleted ? NoContent() : NotFound();
         }
     }
+
 }
