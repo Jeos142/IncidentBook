@@ -79,6 +79,7 @@ namespace IncidentBook.Controllers
         [HttpPost]
         public async Task<ActionResult<ClientItem>> PostClientItem(ClientItem clientItem)
         {
+            clientItem.Incidents = null;
             _context.ClientItems.Add(clientItem);
             await _context.SaveChangesAsync();
 

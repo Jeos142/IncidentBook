@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IncidentBook.Models;
+using IncidentBook.Models.DTOs;
+using Microsoft.CodeAnalysis;
+using Humanizer;
 
 namespace IncidentBook.Controllers
 {
@@ -21,13 +24,51 @@ namespace IncidentBook.Controllers
         }
 
         // GET: api/IncidentItems
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<IncidentItem>>> GetTodoItems()
+        //{
+        //    return await _context.TodoItems
+        //        .OrderBy(item => item.DateTime)             
+        //        .ToListAsync();
+        //}
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<IncidentItem>>> GetTodoItems()
+        public async Task<ActionResult<IEnumerable<IncidentDto>>> GetTodoItems()
         {
-            return await _context.TodoItems
-                .OrderBy(item => item.DateTime)
+            var incidents = await _context.TodoItems
+                .Include(i => i.ClientItem)
+                .Include(i => i.Classification)
+                .Include(i => i.Resolution)
+                .OrderBy(i => i.DateTime)
+                .Select(i => new IncidentDto
+                {
+                    Id = i.Id,
+                    DateTime = i.DateTime,
+                    Description = i.Description,
+                    IsComplete = i.IsComplete,
+                    ClientId = i.ClientId,
+                    Client = new ClientDto
+                    {
+                        Id = i.ClientItem.Id,
+                        Name = i.ClientItem.Name
+                    },
+                    ClassificationId = i.ClassificationId,
+                    Classification = new ClassificationDto
+                    {
+                        Id = i.Classification.Id,
+                        ClassificationName = i.Classification.ClassificationName
+                    },
+                    ResolutionId = i.ResolutionId,
+                    Resolution = i.Resolution == null ? null : new ResolutionDto
+                    {
+                        Id = i.Resolution.Id,
+                        Resolution = i.Resolution.Resolution
+                    }
+                })
                 .ToListAsync();
+
+            return Ok(incidents);
         }
+
 
         // GET: api/IncidentItems/5
         [HttpGet("{id}")]
@@ -45,46 +86,141 @@ namespace IncidentBook.Controllers
 
         // PUT: api/IncidentItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutIncidentItem(long id, IncidentItem incidentItem)
+        //{
+        //    if (id != incidentItem.Id)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    _context.Entry(incidentItem).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!IncidentItemExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return NoContent();
+        //}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutIncidentItem(long id, IncidentItem incidentItem)
+        public async Task<IActionResult> UpdateIncidentItem(long id, IncidentUpdateDto dto)
         {
-            if (id != incidentItem.Id)
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Description) || dto.ClientId <= 0 || dto.ClassificationId <= 0)
             {
-                return BadRequest();
+                return BadRequest("Заполните все обязательные поля.");
             }
 
-            _context.Entry(incidentItem).State = EntityState.Modified;
-
-            try
+            var incident = await _context.TodoItems.FindAsync(id);
+            if (incident == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!IncidentItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound("Инцидент не найден.");
             }
 
-            return NoContent();
+            // Обновляем только измененные поля
+            incident.DateTime = dto.DateTime;
+            incident.Description = dto.Description;
+            incident.ClientId = dto.ClientId;
+            incident.ClassificationId = dto.ClassificationId;
+            incident.IsComplete = dto.IsComplete;
+            incident.ResolutionId = dto.IsComplete ? dto.ResolutionId : null;
+
+            _context.TodoItems.Update(incident);
+            await _context.SaveChangesAsync();
+
+            return NoContent(); // 204 No Content - успешное обновление без возврата объекта
         }
+
 
         // POST: api/IncidentItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<IncidentItem>> PostIncidentItem(IncidentCreateDto dto)
+        //{
+        //    if (dto == null || string.IsNullOrWhiteSpace(dto.Description) || dto.ClientId <= 0 || dto.ClassificationId <= 0)
+        //    {
+        //        return BadRequest("Заполните все обязательные поля.");
+        //    }
+
+        //    var incident = new IncidentItem
+        //    {
+        //        DateTime = dto.DateTime,
+        //        Description = dto.Description,
+        //        ClientId = dto.ClientId,
+        //        ClassificationId = dto.ClassificationId,
+        //        IsComplete = dto.IsComplete,
+        //        ResolutionId = dto.IsComplete ? dto.ResolutionId : null
+        //    };
+
+        //    _context.TodoItems.Add(incident);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction(nameof(GetIncidentItem), new { id = incident.Id }, incident);
+        //}
         [HttpPost]
-        public async Task<ActionResult<IncidentItem>> PostIncidentItem(IncidentItem incidentItem)
+        public async Task<IActionResult> CreateIncidentWithDetails([FromBody] IncidentCreateDto request)
         {
-            _context.TodoItems.Add(incidentItem);
+            if (request == null || string.IsNullOrWhiteSpace(request.Description) || request.ClientId == 0)
+            {
+                return BadRequest("Все обязательные поля должны быть заполнены.");
+            }
+
+            // Создаем новый инцидент
+            var incident = new IncidentItem
+            {
+                DateTime = request.DateTime,
+                Description = request.Description,
+                ClientId = request.ClientId,
+                ClassificationId = request.ClassificationId,
+                IsComplete = request.IsComplete,
+                ResolutionId = request.IsComplete ? request.ResolutionId : null
+            };
+
+            _context.TodoItems.Add(incident);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetIncidentItem), new { id = incidentItem.Id }, incidentItem);
+            //// Получаем имя клиента ( не знаю как оптимальнее
+            //var client = await _context.ClientItems.FindAsync(request.ClientId);
+            //string clientName = client != null ? client.Name : "Неизвестный клиент";
 
+            ////Получаем текст классификации
+            //var searchClassification = await _context.IncidentClassifications.FindAsync(request.ClassificationId);
+            //string? classification = searchClassification != null ? searchClassification.ClassificationName : "Неизвестная классификация";
+
+            ////Получаем текст резолюции
+            //var searchResolution = await _context.ClosedIncidentsItems.FindAsync(request.ResolutionId);
+            //string? resolution = searchResolution != null ? searchResolution.Resolution : "Неизвестная резолюция";
+
+            // Возвращаем готовый объект, чтобы на клиенте не нужно было получать имя клиента, классификацию и резолюцию
+            var result = await _context.TodoItems
+                .Where(i => i.Id == incident.Id)
+                .Select(i => new IncidentCreateResponseDto
+                {
+                    Id = i.Id,
+                    DateTime = i.DateTime,
+                    Description = i.Description,
+                    ClientId = i.ClientId,
+                    ClientName = i.ClientItem.Name,
+                    Classification = i.Classification.ClassificationName,
+                    IsComplete = i.IsComplete,
+                    Resolution = i.Resolution != null ? i.Resolution.Resolution : null
+                })
+                .FirstOrDefaultAsync();
+
+            return Ok(result);
         }
+
 
         // DELETE: api/IncidentItems/5
         [HttpDelete("{id}")]
@@ -106,5 +242,7 @@ namespace IncidentBook.Controllers
         {
             return _context.TodoItems.Any(e => e.Id == id);
         }
+
+
     }
 }

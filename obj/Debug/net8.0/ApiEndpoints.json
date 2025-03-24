@@ -336,7 +336,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[IncidentBook.Models.IncidentItem, IncidentBook, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[IncidentBook.Models.DTOs.IncidentDto, IncidentBook, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -348,29 +348,19 @@
   },
   {
     "ContainingType": "IncidentBook.Controllers.IncidentItemsController",
-    "Method": "PostIncidentItem",
+    "Method": "CreateIncidentWithDetails",
     "RelativePath": "api/IncidentItems",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "incidentItem",
-        "Type": "IncidentBook.Models.IncidentItem",
+        "Name": "request",
+        "Type": "IncidentBook.Models.DTOs.IncidentCreateDto",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "IncidentBook.Models.IncidentItem",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "IncidentBook.Controllers.IncidentItemsController",
@@ -400,7 +390,7 @@
   },
   {
     "ContainingType": "IncidentBook.Controllers.IncidentItemsController",
-    "Method": "PutIncidentItem",
+    "Method": "UpdateIncidentItem",
     "RelativePath": "api/IncidentItems/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
@@ -412,8 +402,8 @@
         "IsRequired": true
       },
       {
-        "Name": "incidentItem",
-        "Type": "IncidentBook.Models.IncidentItem",
+        "Name": "dto",
+        "Type": "IncidentBook.Models.DTOs.IncidentUpdateDto",
         "IsRequired": true
       }
     ],

@@ -3,6 +3,7 @@ using System;
 using IncidentBook.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IncidentBook.Migrations
 {
     [DbContext(typeof(IncidentContext))]
-    partial class IncidentContextModelSnapshot : ModelSnapshot
+    [Migration("20250319150549_DbRestructured")]
+    partial class DbRestructured
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,10 +82,10 @@ namespace IncidentBook.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("ClassificationId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Classification")
+                        .HasColumnType("text");
 
-                    b.Property<int>("ClientId")
+                    b.Property<int>("Client")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("DateTime")
@@ -94,59 +97,12 @@ namespace IncidentBook.Migrations
                     b.Property<bool>("IsComplete")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("ResolutionId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Resolution")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClassificationId");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("ResolutionId");
-
                     b.ToTable("TodoItems");
-                });
-
-            modelBuilder.Entity("IncidentBook.Models.IncidentItem", b =>
-                {
-                    b.HasOne("IncidentBook.Models.IncidentClassification", "Classification")
-                        .WithMany("Incidents")
-                        .HasForeignKey("ClassificationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("IncidentBook.Models.ClientItem", "ClientItem")
-                        .WithMany("Incidents")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IncidentBook.Models.ClosedIncidentsItem", "Resolution")
-                        .WithMany("Incidents")
-                        .HasForeignKey("ResolutionId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Classification");
-
-                    b.Navigation("ClientItem");
-
-                    b.Navigation("Resolution");
-                });
-
-            modelBuilder.Entity("IncidentBook.Models.ClientItem", b =>
-                {
-                    b.Navigation("Incidents");
-                });
-
-            modelBuilder.Entity("IncidentBook.Models.ClosedIncidentsItem", b =>
-                {
-                    b.Navigation("Incidents");
-                });
-
-            modelBuilder.Entity("IncidentBook.Models.IncidentClassification", b =>
-                {
-                    b.Navigation("Incidents");
                 });
 #pragma warning restore 612, 618
         }
