@@ -24,7 +24,9 @@ namespace IncidentBook.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<IncidentItem>>> GetTodoItems()
         {
-            return await _context.TodoItems.ToListAsync();
+            return await _context.TodoItems
+                .OrderBy(item => item.DateTime)
+                .ToListAsync();
         }
 
         // GET: api/IncidentItems/5

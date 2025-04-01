@@ -24,7 +24,9 @@ namespace IncidentBook.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClosedIncidentsItem>>> GetClosedIncidentsItems()
         {
-            return await _context.ClosedIncidentsItems.ToListAsync();
+            return await _context.ClosedIncidentsItems
+                .OrderBy(item => item.Resolution)
+                .ToListAsync();
         }
 
         // GET: api/ClosedIncidentsItems/5

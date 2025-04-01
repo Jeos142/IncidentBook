@@ -24,7 +24,9 @@ namespace IncidentBook.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ClientItem>>> GetClients()
         {
-            return await _context.ClientItems.ToListAsync();
+            return await _context.ClientItems
+                .OrderBy(item => item.Name)
+                .ToListAsync();
         }
 
         // GET: api/ClientItems/5
