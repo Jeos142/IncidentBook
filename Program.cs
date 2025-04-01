@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using IncidentBook.Models;
+using IncidentBook.Repositories.Interfaces;
+using IncidentBook.Repositories;
+using IncidentBook.Services.Interfaces;
+using IncidentBook.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -18,6 +22,14 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+builder.Services.AddScoped<IIncidentRepository, IncidentRepository>();
+builder.Services.AddScoped<IIncidentService, IncidentService>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IClassificationRepository, ClassificationRepository>();
+builder.Services.AddScoped<IClassificationService, ClassificationService>();
+builder.Services.AddScoped<IResolutionRepository, ResolutionRepository>();
+builder.Services.AddScoped<IResolutionService, ResolutionService>();
 
 var app = builder.Build();
 

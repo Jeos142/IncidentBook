@@ -12,33 +12,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ClientItem"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ClientItem"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ClientItem"
-                  }
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -50,41 +24,24 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClientItem"
+                "$ref": "#/components/schemas/ClientDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClientItem"
+                "$ref": "#/components/schemas/ClientDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ClientItem"
+                "$ref": "#/components/schemas/ClientDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientItem"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientItem"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientItem"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -107,24 +64,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientItem"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientItem"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClientItem"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -147,17 +87,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClientItem"
+                "$ref": "#/components/schemas/ClientDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClientItem"
+                "$ref": "#/components/schemas/ClientDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ClientItem"
+                "$ref": "#/components/schemas/ClientDto"
               }
             }
           }
@@ -197,33 +137,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ClosedIncidentsItem"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ClosedIncidentsItem"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ClosedIncidentsItem"
-                  }
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -235,41 +149,24 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClosedIncidentsItem"
+                "$ref": "#/components/schemas/ResolutionDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClosedIncidentsItem"
+                "$ref": "#/components/schemas/ResolutionDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ClosedIncidentsItem"
+                "$ref": "#/components/schemas/ResolutionDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClosedIncidentsItem"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClosedIncidentsItem"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClosedIncidentsItem"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -292,24 +189,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClosedIncidentsItem"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClosedIncidentsItem"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClosedIncidentsItem"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -332,17 +212,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClosedIncidentsItem"
+                "$ref": "#/components/schemas/ResolutionDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClosedIncidentsItem"
+                "$ref": "#/components/schemas/ResolutionDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ClosedIncidentsItem"
+                "$ref": "#/components/schemas/ResolutionDto"
               }
             }
           }
@@ -382,33 +262,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IncidentClassification"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IncidentClassification"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IncidentClassification"
-                  }
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -420,41 +274,24 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentClassification"
+                "$ref": "#/components/schemas/ClassificationDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentClassification"
+                "$ref": "#/components/schemas/ClassificationDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentClassification"
+                "$ref": "#/components/schemas/ClassificationDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentClassification"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentClassification"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentClassification"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -477,24 +314,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentClassification"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentClassification"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentClassification"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       },
@@ -517,17 +337,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentClassification"
+                "$ref": "#/components/schemas/ClassificationDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentClassification"
+                "$ref": "#/components/schemas/ClassificationDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentClassification"
+                "$ref": "#/components/schemas/ClassificationDto"
               }
             }
           }
@@ -561,42 +381,6 @@
       }
     },
     "/api/IncidentItems": {
-      "get": {
-        "tags": [
-          "IncidentItems"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IncidentItem"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IncidentItem"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IncidentItem"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "IncidentItems"
@@ -605,84 +389,39 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentItem"
+                "$ref": "#/components/schemas/IncidentCreateDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentItem"
+                "$ref": "#/components/schemas/IncidentCreateDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentItem"
+                "$ref": "#/components/schemas/IncidentCreateDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentItem"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentItem"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentItem"
-                }
-              }
-            }
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "IncidentItems"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
     },
     "/api/IncidentItems/{id}": {
-      "get": {
-        "tags": [
-          "IncidentItems"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentItem"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentItem"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IncidentItem"
-                }
-              }
-            }
-          }
-        }
-      },
       "put": {
         "tags": [
           "IncidentItems"
@@ -702,17 +441,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentItem"
+                "$ref": "#/components/schemas/IncidentUpdateDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentItem"
+                "$ref": "#/components/schemas/IncidentUpdateDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/IncidentItem"
+                "$ref": "#/components/schemas/IncidentUpdateDto"
               }
             }
           }
@@ -748,35 +487,7 @@
   },
   "components": {
     "schemas": {
-      "ClientItem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ClosedIncidentsItem": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "resolution": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "IncidentClassification": {
+      "ClassificationDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -790,13 +501,23 @@
         },
         "additionalProperties": false
       },
-      "IncidentItem": {
+      "ClientDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IncidentCreateDto": {
+        "type": "object",
+        "properties": {
           "dateTime": {
             "type": "string",
             "format": "date-time"
@@ -805,16 +526,61 @@
             "type": "string",
             "nullable": true
           },
-          "classification": {
-            "type": "string",
-            "nullable": true
+          "clientId": {
+            "type": "integer",
+            "format": "int32"
           },
-          "client": {
+          "classificationId": {
             "type": "integer",
             "format": "int32"
           },
           "isComplete": {
             "type": "boolean"
+          },
+          "resolutionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IncidentUpdateDto": {
+        "type": "object",
+        "properties": {
+          "dateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "clientId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "classificationId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isComplete": {
+            "type": "boolean"
+          },
+          "resolutionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResolutionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
           },
           "resolution": {
             "type": "string",
