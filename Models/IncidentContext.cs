@@ -31,4 +31,46 @@ namespace IncidentBook.Models
         }
 
     }
+    public static class IncidentContextInitializer
+    {
+        public static async Task InitializeAsync(IncidentContext context)
+        {
+            
+            await context.Database.MigrateAsync();
+
+            // Добавляем клиентов, если их нет
+            if (!context.ClientItems.Any())
+            {
+                context.ClientItems.AddRange(
+                    new ClientItem { Name = "Василий" },
+                    new ClientItem { Name = "Екатерина" },
+                    new ClientItem { Name = "Алексей" }
+                );
+            }
+
+            // Добавляем классификации, если их нет
+            if (!context.IncidentClassifications.Any())
+            {
+                context.IncidentClassifications.AddRange(
+                    new IncidentClassification { ClassificationName = "Сбой ПО" },
+                    new IncidentClassification { ClassificationName = "Проблема с оборудованием" },
+                    new IncidentClassification { ClassificationName = "Ошибка сети" }
+                );
+            }
+
+            // Добавляем резолюции, если их нет
+            if (!context.ClosedIncidentsItems.Any())
+            {
+                context.ClosedIncidentsItems.AddRange(
+                    new ClosedIncidentsItem { Resolution = "Закрыто ТП 1-го уровня" },
+                    new ClosedIncidentsItem { Resolution = "Закрыто ТП 2-го уровня" },
+                    new ClosedIncidentsItem { Resolution = "Закрыто ТП 3-го уровня" },
+                    new ClosedIncidentsItem { Resolution = "Другое" }
+                );
+            }
+
+            await context.SaveChangesAsync();
+        }
+    }
+
 }
