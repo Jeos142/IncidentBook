@@ -32,6 +32,7 @@ builder.Services.AddScoped<IResolutionRepository, ResolutionRepository>();
 builder.Services.AddScoped<IResolutionService, ResolutionService>();
 
 var app = builder.Build();
+// AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 if (app.Environment.IsDevelopment())
 {
