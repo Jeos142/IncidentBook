@@ -46,11 +46,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseCors("AllowAll");
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
 
-    var dbContext = services.GetRequiredService<IncidentContext>();
-    IncidentContextInitializer.InitializeAsync(dbContext).GetAwaiter().GetResult();
-}
 app.Run();

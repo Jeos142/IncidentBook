@@ -14,6 +14,7 @@ namespace IncidentBook.Models
         public DbSet<IncidentClassification> IncidentClassifications { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             
             modelBuilder.Entity<IncidentItem>()
                 .HasOne(i => i.Classification)
@@ -28,49 +29,32 @@ namespace IncidentBook.Models
                 .WithMany(r => r.Incidents)
                 .HasForeignKey(i => i.ResolutionId)
                 .OnDelete(DeleteBehavior.Restrict);
+            base.OnModelCreating(modelBuilder);
+
+            // Клиенты
+            modelBuilder.Entity<ClientItem>().HasData(
+                new ClientItem { Id = 1, Name = "Василий" },
+                new ClientItem { Id = 2, Name = "Екатерина" },
+                new ClientItem { Id = 3, Name = "Алексей" }
+            );
+
+            // Классификации
+            modelBuilder.Entity<IncidentClassification>().HasData(
+                new IncidentClassification { Id = 1, ClassificationName = "Сбой ПО" },
+                new IncidentClassification { Id = 2, ClassificationName = "Ошибка сети" }
+            );
+
+            // Резолюции
+            modelBuilder.Entity<ClosedIncidentsItem>().HasData(
+                new ClosedIncidentsItem { Id = 1, Resolution = "Закрыто ТП 1-го уровня" },
+                new ClosedIncidentsItem { Id = 2, Resolution = "Закрыто ТП 2-го уровня" },
+                new ClosedIncidentsItem { Id = 3, Resolution = "Закрыто ТП 3-го уровня" },
+                new ClosedIncidentsItem { Id = 4, Resolution = "Другое" }
+            );
         }
 
     }
-    public static class IncidentContextInitializer
-    {
-        public static async Task InitializeAsync(IncidentContext context)
-        {
-            
-            await context.Database.MigrateAsync();
 
-            // Добавляем клиентов, если их нет
-            if (!context.ClientItems.Any())
-            {
-                context.ClientItems.AddRange(
-                    new ClientItem { Name = "Василий" },
-                    new ClientItem { Name = "Екатерина" },
-                    new ClientItem { Name = "Алексей" }
-                );
-            }
-
-            // Добавляем классификации, если их нет
-            if (!context.IncidentClassifications.Any())
-            {
-                context.IncidentClassifications.AddRange(
-                    new IncidentClassification { ClassificationName = "Сбой ПО" },
-                    new IncidentClassification { ClassificationName = "Проблема с оборудованием" },
-                    new IncidentClassification { ClassificationName = "Ошибка сети" }
-                );
-            }
-
-            // Добавляем резолюции, если их нет
-            if (!context.ClosedIncidentsItems.Any())
-            {
-                context.ClosedIncidentsItems.AddRange(
-                    new ClosedIncidentsItem { Resolution = "Закрыто ТП 1-го уровня" },
-                    new ClosedIncidentsItem { Resolution = "Закрыто ТП 2-го уровня" },
-                    new ClosedIncidentsItem { Resolution = "Закрыто ТП 3-го уровня" },
-                    new ClosedIncidentsItem { Resolution = "Другое" }
-                );
-            }
-
-            await context.SaveChangesAsync();
-        }
-    }
+    
 
 }
