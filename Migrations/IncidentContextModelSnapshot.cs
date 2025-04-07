@@ -37,6 +37,23 @@ namespace IncidentBook.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ClientItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Василий"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Екатерина"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Алексей"
+                        });
                 });
 
             modelBuilder.Entity("IncidentBook.Models.ClosedIncidentsItem", b =>
@@ -53,6 +70,28 @@ namespace IncidentBook.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ClosedIncidentsItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Resolution = "Закрыто ТП 1-го уровня"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Resolution = "Закрыто ТП 2-го уровня"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Resolution = "Закрыто ТП 3-го уровня"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Resolution = "Другое"
+                        });
                 });
 
             modelBuilder.Entity("IncidentBook.Models.IncidentClassification", b =>
@@ -69,6 +108,18 @@ namespace IncidentBook.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("IncidentClassifications");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClassificationName = "Сбой ПО"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClassificationName = "Ошибка сети"
+                        });
                 });
 
             modelBuilder.Entity("IncidentBook.Models.IncidentItem", b =>

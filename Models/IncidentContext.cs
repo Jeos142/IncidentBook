@@ -14,6 +14,7 @@ namespace IncidentBook.Models
         public DbSet<IncidentClassification> IncidentClassifications { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             
             modelBuilder.Entity<IncidentItem>()
                 .HasOne(i => i.Classification)
@@ -28,7 +29,32 @@ namespace IncidentBook.Models
                 .WithMany(r => r.Incidents)
                 .HasForeignKey(i => i.ResolutionId)
                 .OnDelete(DeleteBehavior.Restrict);
+            base.OnModelCreating(modelBuilder);
+
+            // Клиенты
+            modelBuilder.Entity<ClientItem>().HasData(
+                new ClientItem { Id = 1, Name = "Василий" },
+                new ClientItem { Id = 2, Name = "Екатерина" },
+                new ClientItem { Id = 3, Name = "Алексей" }
+            );
+
+            // Классификации
+            modelBuilder.Entity<IncidentClassification>().HasData(
+                new IncidentClassification { Id = 1, ClassificationName = "Сбой ПО" },
+                new IncidentClassification { Id = 2, ClassificationName = "Ошибка сети" }
+            );
+
+            // Резолюции
+            modelBuilder.Entity<ClosedIncidentsItem>().HasData(
+                new ClosedIncidentsItem { Id = 1, Resolution = "Закрыто ТП 1-го уровня" },
+                new ClosedIncidentsItem { Id = 2, Resolution = "Закрыто ТП 2-го уровня" },
+                new ClosedIncidentsItem { Id = 3, Resolution = "Закрыто ТП 3-го уровня" },
+                new ClosedIncidentsItem { Id = 4, Resolution = "Другое" }
+            );
         }
 
     }
+
+    
+
 }
